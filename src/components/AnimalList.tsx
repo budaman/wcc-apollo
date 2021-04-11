@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from "react";
+import { gql, useQuery } from "@apollo/client";
 
 interface Animal {
   name: "string";
 }
 
 const AnimalList = () => {
-  const [animals, setAnimals] = useState<Animal[] | []>([]);
-
-  useEffect(() => {
-    fetch("https://petbook-back-dev.herokuapp.com/graphql", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: "{ animals { name } }" }),
-    })
-      .then((res) => res.json())
-      .then((res) => setAnimals(res.data.animals));
-  }, []);
-
+  const { loading, data, error } = useQuery(gql`
+    {
+      animals {
+        name
+      }
+    }
+  `);
+  if (error) {
+    return <div>error...</div>;
+  }
+  if (loading) {
+    return <div>loading...</div>;
+  }
   return (
     <div>
-      {animals.map((a: Animal) => (
+      {data.animals.map((a: Animal) => (
         <p key={a.name}>{a.name}</p>
       ))}
     </div>
