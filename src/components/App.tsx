@@ -1,7 +1,12 @@
 import React from "react";
+import AnimalList from "./AnimalList";
 
 function App() {
-  return <div className="App">We Can Code</div>;
+  return (
+    <div className="App">
+      <AnimalList />
+    </div>
+  );
 }
 
 export default App;
